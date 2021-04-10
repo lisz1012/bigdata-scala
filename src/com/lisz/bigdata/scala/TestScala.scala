@@ -19,7 +19,9 @@ object A{
   private var b:B = new B(100)
   def main(args: Array[String]): Unit = {
     println("Hello from a.")
-    println(s"Name is: ${b.name}")
+    println(s"Class Name is: ${b.name}")
+    println(s"Object Name is: ${B.name}")
+    b.print()
   }
 }
 
@@ -37,4 +39,11 @@ class B(gender:String){
     println(s"$name gender is $gender")
   }
   println(s"After...${a+3}...")
+  def print(): Unit = {
+    println(s"${B.name}")
+  }
+}
+
+object B{
+  val name = 13
 }
