@@ -3,6 +3,10 @@ package com.lisz.bigdata.scala
 import java.util.Date
 
 object Lesson02 {
+  def function(): Unit ={
+    println("Hello object!")
+  }
+
   def main(args: Array[String]): Unit = {
     println("--------basic---------")
 
@@ -35,9 +39,8 @@ object Lesson02 {
     def fun04(num: Int): Int = {
       if (num == 1) {
         num
-      } else {
-        num * fun04(num - 1)
       }
+      num * fun04(num - 1)
     }
 
     val i: Int = fun04(4)
@@ -123,7 +126,7 @@ object Lesson02 {
       a * b
     })
     calculate(3, 8, _ * _)// 函数体里的出现顺序与声明里相同, 第一个_代表第一个参数，；第二个_代表第二个参数
-    // 函数作为返回值
+    // 函数作为返回值。Java中，+叫"关键字"；scala中，+叫"函数"或"方法"。Scala中没有基本类型，所以写一个数字3，语法是把3看待成Int对象
     def factory(i:String): (Int, Int) => Int = {
       def plus(x:Int, y:Int): Int = {
         x + y
@@ -150,5 +153,10 @@ object Lesson02 {
       b.foreach(println)
     }
     fun10(3, 8, 10)("abc", "def")
+
+    println("--------*.方法---------") // 函数作为参数和返回值
+    val func = function     // 方法无参数就可以省略括号
+    val func1 = function _  // 方法不想执行，复制给一个引用，方法名 + 空格 + 下划线
+    func1()
   }
 }
