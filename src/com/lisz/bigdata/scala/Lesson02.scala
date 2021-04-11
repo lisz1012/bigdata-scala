@@ -38,7 +38,7 @@ object Lesson02 {
 
     def fun04(num: Int): Int = {
       if (num == 1) {
-        num
+        return num
       }
       num * fun04(num - 1)
     }
