@@ -1,6 +1,6 @@
 package com.lisz.bigdata.scala
 
-object Lesson_Case_Class {
+object Lesson05_Case_Class {
   // 中间件消息用的比较多
   case  class Dog(name:String, age:Int){
 
