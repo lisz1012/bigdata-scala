@@ -12,8 +12,8 @@ object WordCountScala {
     val context = new SparkContext(conf)
     //单词统计
     //DATASET
-    val fileRDD: RDD[String] = context.textFile("data/testdata.txt")
-    //hello world
+    val fileRDD: RDD[String] = context.textFile("data/testdata.txt") // textFile  -> create Operator
+    // hello world
     val words = fileRDD.flatMap((x: String) => {
       x.split("\\s+")
     })
