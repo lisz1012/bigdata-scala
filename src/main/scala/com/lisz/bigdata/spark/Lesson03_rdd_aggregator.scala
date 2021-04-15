@@ -29,12 +29,12 @@ object Lesson03_rdd_aggregator {
     group.flatMap(e => e._2.map(x => (e._1, x)).iterator).foreach(println)
     println("--------------------------")
 
-    // 下面的也行,scala会帮我们把key拼上各个value里面的数字，对value做聚合，key唯一. e 只是Tuple2中的value, 但这个vallue又可以迭代
+    // 下面的也行, 跟flatMap一样，是进一条出去多条 scala会帮我们把key拼上各个value里面的数字，对value做聚合，key唯一. e 只是Tuple2中的value, 但这个vallue又可以迭代
     group.flatMapValues(e => e.iterator).foreach(println)
     println("--------------------------")
 
     //group.mapValues(e => e.toList.sorted.take(2)).flatMapValues(e => e.iterator).foreach(println)
-    // 下面的也行
+    // 下面的也行，flatMapValues是列转行：一条 key - list 变成多个 key - value
     group.flatMapValues(_.toList.sorted.take(2)).foreach(println)
     println("--------------------------")
   }
