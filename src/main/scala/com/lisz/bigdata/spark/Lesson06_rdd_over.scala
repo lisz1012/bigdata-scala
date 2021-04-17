@@ -164,6 +164,10 @@ object Lesson06_rdd_over {
     println("---------------------让统计结果放大10倍-----------------------------")
     dataRDD.flatMap(_.split("\\s+")).map((_,10)).reduceByKey(_+_).foreach(println)
 
+    println("---------------------让统计结果放大10倍-----------------------------")
+    val res01 = dataRDD.flatMap(_.split("\\s+")).map((_, 1)).reduceByKey(_ + _)
+    val res02 = res01.map(x => (x._1, x._2 * 10)).groupByKey()
+    res02.foreach(println)
     Thread.sleep(Long.MaxValue)
   }
 
