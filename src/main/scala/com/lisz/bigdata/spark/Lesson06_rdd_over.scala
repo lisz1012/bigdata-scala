@@ -139,7 +139,7 @@ object Lesson06_rdd_over {
       },
       (v1: Array[(Int, Int)], v2: Array[(Int, Int)]) => {
         var union = v1.union(v2)
-        Sorting.quickSort(union)
+        Sorting.quickSort(union) // 原地排序里面的内容
         union
       }
     )
