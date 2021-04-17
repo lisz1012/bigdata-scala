@@ -88,7 +88,7 @@ object Lesson06_rdd_over {
     res.foreach(println)
      */
 
-    // 第二版 两次shuffle
+    // 第二版 两次shuffle，用了groupByKey
     /*
     val data = fileRDD.map(line => line.split("[\\s+|-]")).map(arr => (arr(0).toInt, arr(1).toInt, arr(2).toInt, Integer.parseInt(arr(3))))
     val deduped = data.map(t => ((t._1, t._2, t._3), t._4)).reduceByKey((ov, nv) => if (ov < nv) nv else ov)
