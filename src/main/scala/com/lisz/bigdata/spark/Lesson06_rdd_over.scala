@@ -45,6 +45,7 @@ import scala.util.Sorting
 (1970-8,(1970-8-23,23))
 
  */
+// 生产中是没有这个代码的
 object Lesson06_rdd_over {
   def main(args: Array[String]): Unit = {
     // 综合应用算子
