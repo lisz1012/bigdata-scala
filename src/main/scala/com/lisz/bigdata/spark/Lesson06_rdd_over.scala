@@ -88,7 +88,7 @@ object Lesson06_rdd_over {
     res.foreach(println)
      */
 
-    // 第二版 两次shuffle，用了groupByKey
+    // 第二版 两次shuffle，用了groupByKey。取巧：spark rdd reduceByKey的取mx间接达到去重，让自己的算子变得简单点
     /*
     val data = fileRDD.map(line => line.split("[\\s+|-]")).map(arr => (arr(0).toInt, arr(1).toInt, arr(2).toInt, Integer.parseInt(arr(3))))
     val deduped = data.map(t => ((t._1, t._2, t._3), t._4)).reduceByKey((ov, nv) => if (ov < nv) nv else ov)
