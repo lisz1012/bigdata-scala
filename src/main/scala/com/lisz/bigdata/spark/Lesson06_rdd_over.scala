@@ -147,6 +147,20 @@ object Lesson06_rdd_over {
       }
     )
     res.map(x=>(x._1, x._2.toList)).foreach(println)
+    println("--------------------------------------------------------")
+
+
+    val dataRDD = sc.parallelize(List(
+      "hello world",
+      "hello spark",
+      "hello world",
+      "hello hadoop",
+      "hello world",
+      "hello lisz",
+      "hello world"
+    ))
+    dataRDD.flatMap(_.split("\\s+")).map((_,1)).reduceByKey(_+_).foreach(println)
+    println("--------------------------------------------------------")
 
     Thread.sleep(Long.MaxValue)
   }
