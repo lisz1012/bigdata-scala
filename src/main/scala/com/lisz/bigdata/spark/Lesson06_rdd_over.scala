@@ -95,7 +95,7 @@ object Lesson06_rdd_over {
     res.foreach(println)
     */
 
-    /*
+    /* 三次shuffle
     val data = fileRDD.map(line => line.split("[\\s+|-]")).map(arr => (arr(0).toInt, arr(1).toInt, arr(2).toInt, Integer.parseInt(arr(3))))
     val sorted = data.sortBy(t => (t._1, t._2, t._4), false) // sortBy只管一步之内，步数多了就可能打乱了
     val deduped = sorted.map(t => ((t._1, t._2, t._3), t._4)).reduceByKey((ov, nv) => if (ov > nv) ov else nv)
