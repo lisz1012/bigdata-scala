@@ -17,6 +17,7 @@ object Lesson_rdd_advanced {
 //    data.sample(false, 0.1, 221).foreach(println)
 
     println(s"data: ${data.getNumPartitions}")
+    // Index是分区号，iterator是分区数据的迭代器
     data.mapPartitionsWithIndex(
       (index, iterator) => {
        iterator.map(x => (index, x))
@@ -28,7 +29,7 @@ object Lesson_rdd_advanced {
     //val repartition = data.repartition(8)
     val repartition = data.coalesce(8, false) // 如果分区数变，某些合并分区，不散列；如果分区数变大，则不会有任何影响，没办法，因为要强行避免shuffle
     // 分布式情况下，数据移动有两种方式：IO移动和shuffle，前者只需要把所有数据移动到目的地就可以了；后者要计算每一条数据将来的去向
-    println(s"data: ${repartition .getNumPartitions}")
+    println(s"data: ${repartition.getNumPartitions}")
     repartition.mapPartitionsWithIndex(
       (index, iterator) => {
         iterator.map((index, _)) //和上面逻辑一样，但是简写了
