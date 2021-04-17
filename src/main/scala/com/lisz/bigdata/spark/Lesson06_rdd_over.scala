@@ -70,7 +70,7 @@ object Lesson06_rdd_over {
       .foreach(println)
     println("--------------------------------------------------------")
 
-    // 第一版 1次shuffle，HashMap又有问题了，数据积压在里面
+    // 第一版 1次shuffle，groupByKey和HashMap又有问题了，数据积压在里面
     /*val data = fileRDD.map(line => line.split("[\\s+|-]")).map(arr => (arr(0).toInt, arr(1).toInt, arr(2).toInt, Integer.parseInt(arr(3))))
     val res = data.map(t4 => ((t4._1, t4._2), (t4._3, t4._4))).groupByKey().mapValues(arr => { // groupByKey不建议使用，迭代器要加载元素到哦内存
       val map = new mutable.HashMap[Int, Int]()
