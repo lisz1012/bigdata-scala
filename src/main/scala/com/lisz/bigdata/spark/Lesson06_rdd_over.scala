@@ -140,7 +140,7 @@ object Lesson06_rdd_over {
         }
         oldV
       },
-      (v1: Array[(Int, Int)], v2: Array[(Int, Int)]) => {
+      (v1: Array[(Int, Int)], v2: Array[(Int, Int)]) => { // 最后这一下发生在reducer
         var union = v1.union(v2) // union 不严谨，可能会有不同来自mapper的相同的日期
         Sorting.quickSort(union) // 原地排序里面的内容
         union
