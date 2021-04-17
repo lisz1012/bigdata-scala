@@ -160,7 +160,9 @@ object Lesson06_rdd_over {
       "hello world"
     ))
     dataRDD.flatMap(_.split("\\s+")).map((_,1)).reduceByKey(_+_).foreach(println)
-    println("--------------------------------------------------------")
+
+    println("---------------------让统计结果放大10倍-----------------------------")
+    dataRDD.flatMap(_.split("\\s+")).map((_,10)).reduceByKey(_+_).foreach(println)
 
     Thread.sleep(Long.MaxValue)
   }
