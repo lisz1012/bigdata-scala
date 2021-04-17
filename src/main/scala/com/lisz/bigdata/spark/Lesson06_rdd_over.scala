@@ -113,7 +113,8 @@ object Lesson06_rdd_over {
     res.foreach(println)
     */
 
-    // 分布式计算的核心思想，调优天下无敌，分布式是并行的。离线批量计算有一个特征就是后续步骤（stage）依赖前一步骤
+    // 分布式计算的核心思想，调优天下无敌，分布式是并行的。离线批量计算有一个特征就是后续步骤（stage）依赖前一步骤。如果前一步骤（stage）能够加上正确的combineByKey。
+    // 我们自定义的CombineByKey的函数，是尽量压缩内存中的数据
     val data = fileRDD.map(line => line.split("[\\s+|-]")).map(arr => (arr(0).toInt, arr(1).toInt, arr(2).toInt, Integer.parseInt(arr(3))))
     val kv = data.map(t => ((t._1, t._2), (t._3, t._4)))
     val res = kv.combineByKey( // 前置在了mapper
