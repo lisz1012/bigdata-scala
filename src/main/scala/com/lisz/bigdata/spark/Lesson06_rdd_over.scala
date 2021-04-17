@@ -114,7 +114,7 @@ object Lesson06_rdd_over {
 
     val data = fileRDD.map(line => line.split("[\\s+|-]")).map(arr => (arr(0).toInt, arr(1).toInt, arr(2).toInt, Integer.parseInt(arr(3))))
     val kv = data.map(t => ((t._1, t._2), (t._3, t._4)))
-    val res = kv.combineByKey(
+    val res = kv.combineByKey( // 前置在了mapper
       (value: (Int, Int)) => Array[(Int, Int)](value, (0, 0)),
       (oldV: Array[(Int, Int)], newV: (Int, Int)) => {
         for (i <- 0 until oldV.length) {
