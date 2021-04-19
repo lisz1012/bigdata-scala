@@ -37,7 +37,7 @@ object Lesson_rdd_advanced {
     )
     .foreach(println)
 
-    Thread.sleep(Long.MaxValue)
+    Thread.sleep(Long.MaxValue) // 卡在这里，为的是方便查看运行的各个stage情况，这个网页（192.168.1.102:4040）只有运行期间才打得开
   }
 
 }
