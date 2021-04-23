@@ -1,7 +1,7 @@
 package com.lisz.bigdata.scala
 
 object Lesson05_Case_Class {
-  // 中间件消息用的比较多
+  // 中间件消息用的比较多： Spark中Master和Worker；Driver和Executor之间
   case  class Dog(name:String, age:Int){
 
   }
