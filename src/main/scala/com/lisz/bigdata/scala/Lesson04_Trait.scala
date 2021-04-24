@@ -1,5 +1,5 @@
 package com.lisz.bigdata.scala
-
+// 多继承的时候用得到
 object Lesson04_Trait {
 
   trait God {
