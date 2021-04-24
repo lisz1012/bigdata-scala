@@ -5,7 +5,7 @@ import org.apache.spark.{SparkConf, SparkContext}
 object Lesson_rdd_advanced {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf().setMaster("local").setAppName("test")
-    val sc = new SparkContext(conf) //相当于SparkContext相当于 计算层的 Driver
+    val sc = new SparkContext(conf) //相当于SparkContext相当于 计算层的 Driver，看Driver端的代码的时候，从SparkContext的runJob入手
     sc.setLogLevel("ERROR")
 
     val data = sc.parallelize(1 to 100, 5)
