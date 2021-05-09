@@ -6,7 +6,7 @@ import org.apache.spark.sql.SparkSession
 object sql_05_on_hive {
   def main(args: Array[String]): Unit = {
     val session = SparkSession.builder().appName("test").master("local")
-      .config("hive.metastore.uris", "thrift://hadoop-03:9083") // 跟hiveserver2的配置是一样的
+      .config("hive.metastore.uris", "thrift://hadoop-03:9083") // 跟hiveserver2的 hive-site.xml 配置是一样的
       .enableHiveSupport()
       .getOrCreate()
     val sc = session.sparkContext
