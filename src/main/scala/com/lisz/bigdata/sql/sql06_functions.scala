@@ -100,11 +100,45 @@ object sql06_functions {
 //    ).show()
 
     // 行列转换: 由一行多列变为多行
-    session.sql("select  name, " +
-      " explode(split(concat(case when class = 1 then 'AA' else 'BB' end, ' ', score), ' ')) " +
-      " as ox " +
-      " from users ").show()
+//    session.sql("select  name, " +
+//      " explode(split(concat(case when class = 1 then 'AA' else 'BB' end, ' ', score), ' ')) " +
+//      " as ox " +
+//      " from users ").show()
 
+    // OLAP 开窗函数 依赖 fun() over(partition order). group by 是纯聚合函数：一组最后就一条. over做的是分区排序/统计 ，rank作用在每条记录上
+//    session.sql("select *,   " +
+//      " rank() over(partition by class order by score desc) as rank, " +  //rank(score) 也可以
+//      " row_number() over(partition by class order by score desc) as number " +
+//      "  from users  ").show()
+//
+//    session.sql("select *,    " +
+//      " count(score) over(partition by class) as num  " +
+//      " from users  ").show()
+//
+//
+//
+//
+//    println("----------------------")
+//    //session.sql("select class, count(score) as num from users group by class").show()
+//    val res = session.sql("select name, sum(score) sum_score from users group by name order by sum_score desc")
+//    res.show()
+//    println("----------------------")
+//    res.explain(true)
+
+    val res = session.sql("select ta.name, ta.class, tb.score  + 20 + 80  " +
+      "          " +
+      " from   " +
+      "  (select name, class from users) as ta  " +
+      " join  " +
+      " (select name, score from users where score > 10) as tb  " +
+      " on ta.name = tb.name    " +
+      " where   tb.score > 60   ")
+//    val res = session.sql("select ta.name from  " +
+//        " (select * from  " +
+//        " (select * from users  where score > 60  ) as tt)  as ta  ")
+    res.show()
+    println("-----------------------------")
+    res.explain(true)
   }
 
 }

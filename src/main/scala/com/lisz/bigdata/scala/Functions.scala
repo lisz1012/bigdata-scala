@@ -1,7 +1,7 @@
 package com.lisz.bigdata.scala
 
 import java.util.Date
-
+// 等号前面是方法名称和参数列表，后面是方法体
 object Functions {
   def function(): Unit = {
     println("Hello")
