@@ -19,6 +19,7 @@ object MakaData {
               printer.println(s"hello ${num}")
               printer.println(s"hi ${num}")
               printer.println(s"hi ${num}")
+              printer.println(s"ha ${num}")
               Thread.sleep(1000)
             }
           }
