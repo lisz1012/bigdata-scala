@@ -17,7 +17,7 @@ object DStream_API_3 {
     // 调优：用checkpoint并且配合persist或者cache方法
     format.persist(StorageLevel.MEMORY_AND_DISK)
     //reduceByKey 对  combinationBykey的封装  放入函数，聚合函数，combina函数
-    val res = format.reduceByKeyAndWindow(
+    val res = format.reduceByKeyAndWindow( // dui reduceByKey要很清楚
       (x: Int, y: Int) => { // 这是个聚合函数和combination函数（两个身份：combineByKey的后两个函数参数）：某一键，batch内有两条的时候才能调到聚合函数身份他，所以只有"hi"会触发这个聚合函数一次，所有键都会以Combine函数的方式调用他一次。spark默认有一个放入函数
         /*
         第二次输出：
@@ -28,7 +28,7 @@ object DStream_API_3 {
         first fun...
         ov: 2    nv: 2     ---> hi的batch新数据和历史老数据的comnbine
         first fun...
-        ov: 1    nv: 1     ---> ha的batch新数据和历史老数据的comnbine
+        ov: 1    nv: 1     ---> ha的batch新数据和历史老数据的comnbine。 注：之后挤出去的batches也要先计算合并再做减法
          */
         println("first fun...")   // 打印次数跟MakeData的数据原始输入一批过来的数据条数有关
         println(s"ov: $x    nv: $y")
