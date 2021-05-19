@@ -16,8 +16,8 @@ object Lesson04_kafka_consumer {
     props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, classOf[StringDeserializer])
     props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, classOf[StringDeserializer])
     props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest") // consumer组从误导有的时候从什么位置开始取消息： earliest从组的CURRENT-OFFSET开始，CURRENT-OFFSET初始值为0，latest从LOG-END-OFFSET开始
-    props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "TRUE")
-    props.put(ConsumerConfig.GROUP_ID_CONFIG, "test3")
+    props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "FALSE") // 设置为FALSE的时候，Kafka不会维护CURRENT-OFFSET，这个值默认在Kafka这里查不到，除非程序把这个offset写回Kafka
+    props.put(ConsumerConfig.GROUP_ID_CONFIG, "test4")
     //props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "1")
 
     val consumer = new KafkaConsumer[String, String](props)
@@ -34,13 +34,14 @@ object Lesson04_kafka_consumer {
       }
 
       override def onPartitionsAssigned(partitions: util.Collection[TopicPartition]): Unit = {
-        println(s"onPartitionsAssigned")
+        println(s"onPartitionsAssigned")  //这个Consumer负责那些分区
         val iter = partitions.iterator()
         while (iter.hasNext) {
           println(iter.next)
         }
         // 调用数据库取出offset
         consumer.seek(new TopicPartition("topic1", 1), 3704)
+        consumer.seek(new TopicPartition("topic1", 2), 3704)
         Thread.sleep(5000)
       }
     })
