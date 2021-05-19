@@ -5,7 +5,7 @@ import java.util
 import java.util.Properties
 import java.util.regex.Pattern
 
-import org.apache.kafka.clients.consumer.{ConsumerConfig, ConsumerRebalanceListener, KafkaConsumer}
+import org.apache.kafka.clients.consumer.{ConsumerConfig, ConsumerRebalanceListener, ConsumerRecord, KafkaConsumer, OffsetAndMetadata}
 import org.apache.kafka.common.TopicPartition
 import org.apache.kafka.common.serialization.StringDeserializer
 
@@ -41,17 +41,19 @@ object Lesson04_kafka_consumer {
         }
         // 调用数据库取出offset
         consumer.seek(new TopicPartition("topic1", 1), 3704)
-        consumer.seek(new TopicPartition("topic1", 2), 3704)
         Thread.sleep(5000)
       }
     })
+
+    val offmap = new util.HashMap[TopicPartition, OffsetAndMetadata]()
+    var record : ConsumerRecord[String, String] = null
     while (true) {
       val records = consumer.poll(0)
       if (!records.isEmpty) {
         println(s"-------------${records.count}-------------")
         val iter = records.iterator()
         while (iter.hasNext) {
-          val record = iter.next()
+          record = iter.next()
           val topic = record.topic()
           val partition = record.partition()
           val offset = record.offset()
@@ -59,6 +61,11 @@ object Lesson04_kafka_consumer {
           val value = record.value()
           println(s"key: $key  value: $value partition: $partition offset: $offset topic: $topic")
         }
+        // 手动维护offset有两类地方,防止丢失数据 1.手动维护到Kafka，先计算，再维护回offset 2. zk, MySQL...
+        val partition = new TopicPartition("topic1", record.partition())
+        val offset = new OffsetAndMetadata(record.offset())
+        offmap.put(partition, offset)
+        consumer.commitSync(offmap)
       }
       Thread.sleep(500)
     }
