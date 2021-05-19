@@ -9,6 +9,23 @@ import org.apache.kafka.clients.consumer.{ConsumerConfig, ConsumerRebalanceListe
 import org.apache.kafka.common.TopicPartition
 import org.apache.kafka.common.serialization.StringDeserializer
 
+/**
+ * kafka-consumer
+ * 1，自动维护offset：ENABLE_AUTO_COMMIT_CONFIG  true   poll数据之后先去写offset，在去计算，会有丢失数据
+ * 2，手动维护offset：ENABLE_AUTO_COMMIT_CONFIG  false
+ *    a)维护到kafka自己的__consumer_offset_   这个topic中  且你还能通过  kafka-consumer-groups.sh  查看
+ *    b)维护到其他的位置：mysql，zk
+ *      *)这时候会比维护到Kafka多一步骤，牵扯到通过：ConsumerRebalanceListener  onPartitionsAssigned 方法回调后 自己seek到查询的位置
+ *3，AUTO_OFFSET_RESET_CONFIG   自适应  必须参考  __consumer_offset_维护的
+ *        //earliest    按   CURRENT-OFFSET   特殊状态：  group第一创建的时候，0
+ *        // latest     按   LOG-END-OFFSET
+ *4，seek覆盖性最强的，seek会覆盖上面所有的配置
+ *
+ * 在一个Consumer Group里，一个Partition只能对应一个Consumer，一个Consumer能消费多个partition。每个不同的组，有自己的消费偏移
+ *
+ *
+ */
+
 object Lesson04_kafka_consumer {
   def main(args: Array[String]): Unit = {
     val props = new Properties()
@@ -17,8 +34,8 @@ object Lesson04_kafka_consumer {
     props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, classOf[StringDeserializer])
     props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest") // consumer组从误导有的时候从什么位置开始取消息： earliest从组的CURRENT-OFFSET开始，CURRENT-OFFSET初始值为0，latest从LOG-END-OFFSET开始
     props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "FALSE") // 设置为FALSE的时候，Kafka不会维护CURRENT-OFFSET，这个值默认在Kafka这里查不到，除非程序把这个offset写回Kafka
-    props.put(ConsumerConfig.GROUP_ID_CONFIG, "test4")
-    //props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "1")
+    props.put(ConsumerConfig.GROUP_ID_CONFIG, "test5")
+    //props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "1") //一次最多拉取多少条消息
 
     val consumer = new KafkaConsumer[String, String](props)
 //    val list = new util.ArrayList[String]()
@@ -66,6 +83,7 @@ object Lesson04_kafka_consumer {
         val offset = new OffsetAndMetadata(record.offset())
         offmap.put(partition, offset)
         consumer.commitSync(offmap)
+        //如果在运行时手动提交offset到MySQL，那么一旦程序重启，可以通过ConsumerRebalanceListener协商后获得的分区取MySQL查询该分区上次消费记录的位置
       }
       Thread.sleep(500)
     }

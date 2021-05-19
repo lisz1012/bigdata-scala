@@ -5,6 +5,9 @@ import java.util.Properties
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerConfig, ProducerRecord}
 import org.apache.kafka.common.serialization.StringSerializer
 
+/**
+ * Producer相同的Key会被分配到相同的Kafka Partition，注意Key的设计
+ */
 object Lesson04_kafka_producer {
   def main(args: Array[String]): Unit = {
     val props = new Properties()
