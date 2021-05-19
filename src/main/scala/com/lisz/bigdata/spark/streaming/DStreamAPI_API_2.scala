@@ -34,7 +34,7 @@ object DStreamAPI_API_2 {
 //    )
 //    res.print()
 
-    //企业中最终用mapWithState做全量有状态统计计算
+    //企业中最终用mapWithState做全量有状态统计计算，计算历史数据
     val res = mapData.mapWithState(StateSpec.function(
       (k: String, nv: Option[Int], ov: State[Int]) => { // 一条条的更新
         println(s"=***********  k: $k  nv: ${nv.getOrElse(0)}  ov: ${ov.getOption().getOrElse(0)} ***********")
