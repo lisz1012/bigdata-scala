@@ -41,6 +41,7 @@ object Lessson05_spark_kafka_consumer {
 //      (new TopicPartition("from mysql topic", 1), 53),
 //      (new TopicPartition("from mysql topic", 2), 13)
 //    )
+    // transaction怎么整是个问题
     val kafka: InputDStream[ConsumerRecord[String, String]] = KafkaUtils.createDirectStream[String, String](
       ssc,
       LocationStrategies.PreferConsistent, // Spark的一个Consumer默认对应一个Kafka Partition，consumer运行在spark的executor里，每个consumer只能看到自己的数据
