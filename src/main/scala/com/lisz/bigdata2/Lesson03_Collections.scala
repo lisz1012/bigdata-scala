@@ -93,6 +93,7 @@ object Lesson03_Collections {
     val iterator = listStr.iterator // 迭代器不存数据，只是存一个指针
     // flatMap只是返回了一个新的迭代器，没有发生计算。一个iterator会返回另一个Iterator, 在新迭代器的hasNext和next中被传入的
     // 函数得以被调用。多个Iterator会像这样被连成一个链条。中间只有一个小的cur存储空间被占用到了（见flatMap函数）
+    // Java 8中新增的集合的map等方法，来自scala，也可以说来自spark的各个同名算子
     val iterFlatMap = iterator.flatMap(_.split("\\s+"))
     //iterFlatMap.foreach(println)
     val iterMapList = iterFlatMap.map((_, 1))
