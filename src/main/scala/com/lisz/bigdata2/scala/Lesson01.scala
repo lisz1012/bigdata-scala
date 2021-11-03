@@ -1,4 +1,4 @@
-package com.lisz.bigdata2
+package com.lisz.bigdata2.scala
 
 object Lesson01 {
   def main(args: Array[String]): Unit = {

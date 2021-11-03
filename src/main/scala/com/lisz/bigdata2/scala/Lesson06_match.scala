@@ -1,4 +1,4 @@
-package com.lisz.bigdata2
+package com.lisz.bigdata2.scala
 
 // match java中的switch
 object Lesson06_match {

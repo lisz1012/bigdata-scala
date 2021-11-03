@@ -1,4 +1,4 @@
-package com.lisz
+package com.lisz.bigdata2.scala
 
 object TestScala {
   def main(args: Array[String]): Unit = {

@@ -1,4 +1,4 @@
-package com.lisz.bigdata2
+package com.lisz.bigdata2.scala
 
 import java.util.Date
 

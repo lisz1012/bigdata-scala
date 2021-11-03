@@ -1,4 +1,4 @@
-package com.lisz.bigdata2
+package com.lisz.bigdata2.scala
 
 object Lesson07_PartialFunction {
   def xxx:PartialFunction[Any, String] = {
