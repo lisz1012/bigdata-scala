@@ -19,6 +19,16 @@ object WordCountScala {
     println("---------")
 
 
-    sc.textFile("data/testdata.txt").flatMap(_.split("\\s+")).map((_, 1)).reduceByKey(_+_).foreach(println)
+    //sc.textFile("data/testdata.txt").flatMap(_.split("\\s+")).map((_, 1)).reduceByKey(_+_).foreach(println)
+
+    // 文中出现n次的单词有几个？
+    println("-----------------------")
+    //sc.textFile("data/testdata.txt").flatMap(_.split("\\s+")).map((_, 1)).reduceByKey(_+_).map(t=>(t._2, 1)).reduceByKey(_+_).foreach(println)
+    val resOver = res.map(t => (t._2, 1)).reduceByKey(_ + _)
+
+    res.foreach(println)
+    resOver.foreach(println)
+
+    Thread.sleep(Long.MaxValue)
   }
 }
