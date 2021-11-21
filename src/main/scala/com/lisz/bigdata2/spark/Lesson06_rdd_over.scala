@@ -48,18 +48,83 @@ object Lesson06_rdd_over {
       }
     }
 
-    val res = sc.textFile("data/tqdata.txt").map(x => {
-      val split = x.split("\\s+")
-      val split2 = split(0).split("-")
+//    val res = sc.textFile("data/tqdata.txt").map(x => {
+//      val split = x.split("\\s+")
+//      val split2 = split(0).split("-")
+//      (split2(0).toInt, split2(1).toInt, split2(2).toInt, split(1).toInt)
+//    }).map(x=>((x._1, x._2, x._3), x._4)).reduceByKey((x, y) => {
+//      if (x > y) x else y
+//    }).map(x=>{
+//      ((x._1._1, x._1._2), (x._1._3, x._2))
+//    }).groupByKey().mapValues(x=>x.toList.sorted.take(2))
+
+//    val res = sc.textFile("data/tqdata.txt").map(x => {
+//      val split = x.split("\\s+")
+//      val split2 = split(0).split("-")
+//      (split2(0).toInt, split2(1).toInt, split2(2).toInt, split(1).toInt)
+//    }).sortBy(x => {
+//      (x._1, x._2, x._4) // 年、月、温度的倒序
+//    }, false).map(x => { // tuple4 变成tuple2
+//      ((x._1, x._2, x._3), x._4)
+//    }).reduceByKey((x, y) => { // 去重，每一天只保留最高温
+//      if (x > y) {
+//        x
+//      } else {
+//        y
+//      }
+//    }).map(x => {
+//      ((x._1._1, x._1._2), (x._1._3, x._2))
+//    }).groupByKey()//.mapValues(x=>x.toList.sorted.take(2)) // 后面的算子会扰乱前面的排序
+
+
+//    val res = sc.textFile("data/tqdata.txt").map(x => {
+//      val split = x.split("\\s+")
+//      val split2 = split(0).split("-")
+//      (split2(0).toInt, split2(1).toInt, split2(2).toInt, split(1).toInt)
+//    }).map(x =>((x._1, x._2), (x._3, x._4))).reduceByKey((x, y) => {
+//      if (x._2 > y._2) {
+//        x
+//      } else {
+//        y
+//      }
+//    }).map(x=>{
+//      ((x._1._1, x._1._2, x._2._1), x._2._2)
+//    }).groupByKey().mapValues(x=>x.toList.sorted.take(2))
+
+//    val data = sc.textFile("data/tqdata.txt").map(x => {
+//      val split = x.split("\\s+")
+//      val split2 = split(0).split("-")
+//      (split2(0).toInt, split2(1).toInt, split2(2).toInt, split(1).toInt)
+//    })
+//    val sorted = data.sortBy(x => (x._1, x._2, x._4), false)
+//    val grouped = sorted.map(x => ((x._1, x._2), (x._3, x._4))).groupByKey() //shuffle是依据前面的key元素的子集，所以顺序不会乱
+//    grouped.foreach(println)
+
+    val data = sc.textFile("data/tqdata.txt").map(x => {
+    val split = x.split("\\s+")
+    val split2 = split(0).split("-")
       (split2(0).toInt, split2(1).toInt, split2(2).toInt, split(1).toInt)
-    }).map(x=>((x._1, x._2, x._3), x._4)).reduceByKey((x, y) => {
-      if (x > y) x else y
-    }).map(x=>{
-      ((x._1._1, x._1._2), (x._1._3, x._2))
-    }).groupByKey().mapValues(x=>x.toList.sorted.take(2))
+    })
+    val grouped = data.map(x => ((x._1, x._2), (x._3, x._4))).combineByKey(
+      value => Array(value, (0, 0), (0, 0)), // Array让相邻数据的比较有了空间
+      (oldV:Array[(Int, Int)], newV:(Int, Int)) => {
+          if (newV._1.equals(oldV(0)._1) && newV._2 > oldV(0)._2) {
+            oldV(0) = newV
+          } else if (newV._1.equals(oldV(1)._1) && newV._2 > oldV(1)._2) {
+            oldV(1) = newV
+          } else {
+            oldV(2) = newV
+          }
+        oldV
+      },
+      (x:Array[(Int, Int)], y:Array[(Int, Int)]) => {
+        x.union(y)
+      }
+    ) //shuffle是依据前面的key元素的子集，所以顺序不会乱
+    grouped.map(x=>(x._1, x._2.toList.sorted.take(2).filter(_._1 != 0))).foreach(println)
 
 
-    res.foreach(println)
+    //res.foreach(println)
 
     Thread.sleep(10000000)
   }
