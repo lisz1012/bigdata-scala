@@ -115,7 +115,7 @@ object Lesson06_rdd_over {
           } else {
             oldV(2) = newV
           }
-        oldV
+        oldV.sorted
       },
       (x:Array[(Int, Int)], y:Array[(Int, Int)]) => {
         x.union(y)
