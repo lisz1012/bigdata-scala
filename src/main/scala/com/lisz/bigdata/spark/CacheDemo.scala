@@ -21,6 +21,7 @@ object CacheDemo {
       }
     })
 
+    // 多几缓存机制
     d2rdd.persist(StorageLevel.MEMORY_AND_DISK) // http://192.168.1.102:4040/storage/ 552 B
     //d2rdd.persist(StorageLevel.MEMORY_ONLY_SER) // http://192.168.1.102:4040/storage/ 338.0 B
     // d2rdd.persist(StorageLevel.MEMORY_AND_DISK) // Store in Memory first, use Disk if there is not enough memory
