@@ -2,6 +2,9 @@ package com.lisz.bigdata2.spark
 
 import org.apache.spark.{SparkConf, SparkContext}
 
+/**
+ * RDD及其应用完结篇，下面转入源码分析，精彩继续😄
+ */
 object Lesson06_rdd_over_2 {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf().setMaster("local").setAppName("topN")
