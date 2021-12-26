@@ -24,5 +24,9 @@ object Lesson08_other {
     val res = data1.filter(x => bList.value.contains(x))
 //    list.foreach(println)
     res.foreach(println)
+
+    /**
+     * 无论广播变量，还是闭包数据，都属于垂直join，或者map端join，杜绝了一次shuffle
+     */
   }
 }
