@@ -20,7 +20,7 @@ object Lesson02_sql_api01_5 {
     // 最后这种方法最常用！！但所有这些在工作中都不怎么用，但是有助于理解Spark SQL
     // Dataset是RDD的扩展，RDD面只向collection，Dataset除了面向collection还能面向SQL等领域语言，DataFrame是他的一个子集
     //Spark 的Dataset  既可以按collection，类似于rdd的方法操作，也可以按SQL领域语言定义的方式操作数据
-    // Dataset比RDD强的地方是有编码器，对数据有识别、序列化反序列化等优化，序列化之后的数据能少占用内存，且可以触发钨丝计划，使用堆外内存
+    // Dataset比RDD强的地方是有编码器，对数据有识别、序列化反序列化等优化，序列化之后的数据能少占用内存，且可以触发钨丝计划，灵活使用堆内外内存
 
     /**
      * 纯文本文件，不带自描述，string  不被待见的
