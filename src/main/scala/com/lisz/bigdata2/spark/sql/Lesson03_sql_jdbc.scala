@@ -15,7 +15,7 @@ object Lesson03_sql_jdbc {
     import session.implicits._
 
     val prop = new Properties()
-    prop.put("url", "jdbc:mysql://192.168.1.25/spark")
+    prop.put("url", "jdbc:mysql://192.168.1.25/spark") // spark是数据库名
     prop.put("user", "root")
     prop.put("password", "P@ssw0rd")
     prop.put("driver", "com.mysql.cj.jdbc.Driver")
