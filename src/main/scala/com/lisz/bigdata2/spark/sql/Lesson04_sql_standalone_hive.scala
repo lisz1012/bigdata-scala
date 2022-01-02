@@ -5,7 +5,7 @@ import java.util.Properties
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 
-object Lesson03_sql_standalone_hive {
+object Lesson04_sql_standalone_hive {
   def main(args: Array[String]): Unit = {
     val conf: SparkConf = new SparkConf().setMaster("local").setAppName("test")
     val session = SparkSession.builder().appName("test").master("local")
