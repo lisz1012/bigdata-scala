@@ -34,7 +34,7 @@ object Lesson03_sql_jdbc2 {
 //    val resDF01 = resDF.coalesce(1)
 //    println("Partitions: " + resDF01.rdd.partitions.length)
 
-    resDF.write.jdbc(prop.get("url").toString, "stu_score_2", prop)
+    resDF.write.jdbc(prop.get("url").toString, "stu_score_2", prop) // 写入MySQL中的新表：stu_score_2
 
   }
 }
