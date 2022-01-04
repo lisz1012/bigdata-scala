@@ -84,6 +84,25 @@ object Lesson06_sql_functions {
 //    ).show()
 
     // 行列转换
-    session.sql("select name, explode(split(concat( case when class = 1 then '语文' when class = 2 then '数学' end, ' ', score), ' ')) from users").show()
+    // session.sql("select name, explode(split(concat( case when class = 1 then '语文' when class = 2 then '数学' end, ' ', score), ' ')) from users").show()
+
+    // OLAP 开窗函数fun() over(partition order)
+    // group by 是纯聚合函数
+    // session.sql("select *,   rank()  over (partition by class order by score desc) as rank, row_number() over(partition by class order by score desc) as number from users").show
+
+    // 选出了每个人的各科排名和总人数
+    session.sql("select *, rank() over(partition by class order by score desc) as rank, count(score) over (partition by class) as num from users").show
+    /**
+     * +----+-----+-----+----+---+
+     * |name|class|score|rank|num|
+     * +----+-----+-----+----+---+
+     * |   A|    1|   90|   1|  3|
+     * |   B|    1|   90|   1|  3|
+     * |   C|    1|   80|   3|  3|
+     * |   B|    2|   60|   1|  2|
+     * |   A|    2|   50|   2|  2|
+     * +----+-----+-----+----+---+
+     */
+    //    session.sql("select class, count(score) as num  from users group by class").show
   }
 }
