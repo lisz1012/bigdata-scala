@@ -103,6 +103,22 @@ object Lesson06_sql_functions {
      * |   A|    2|   50|   2|  2|
      * +----+-----+-----+----+---+
      */
+//    println("--------------------")
+//    val res = session.sql("select name, sum(score) from users group by name order by name desc")
+//    println("--------------------")
+//    res.explain(true)
+
+    val res = session.sql("select ta.name, ta.class, tb.score + 20 + 80 from (select name, class from users) as ta " +
+      "join (select name, score from users where score > 10) as tb " +
+      "on ta.name = tb.name" +
+      " where tb.score > 60") // 单表关联、自关联，一张表里面既有发款记录也有对方的收款记录
+    res.show
+    res.explain(true)
+
+//    val res = session.sql("select ta.name from (select * from (select * from users where score > 60) as tt) as ta")
+//    res.show
+//    res.explain(true)
+
     //    session.sql("select class, count(score) as num  from users group by class").show
   }
 }
