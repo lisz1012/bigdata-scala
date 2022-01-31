@@ -18,6 +18,8 @@ object MakeData {
             while (client.isConnected){
               num += 1
               printStream.println(s"hello ${num}")
+              printStream.println(s"hi ${num}")
+              printStream.println(s"hi ${num}")
               Thread.sleep(1000)
             }
           }
