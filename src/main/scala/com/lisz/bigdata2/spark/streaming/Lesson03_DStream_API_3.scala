@@ -57,7 +57,7 @@ object Lesson03_DStream_API_3 {
 
     val res = format.transform(
       rdd => {
-        jobNum += 1  // 每job级别增加1，在ssc的另一个while(true)循环的线程里，Driver端执行的
+        jobNum += 1  // 每job级别增加1，在ssc的另一个while(true)循环的线程里，Driver端执行的.
         println(s"jobNum: $jobNum")
         if (jobNum <= 5) {
           bc = sc.broadcast((1 to 5).toList)
