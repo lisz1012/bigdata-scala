@@ -26,8 +26,8 @@ object DStream_API_03 {
     //状态<-  历史数据  join、关联  历史的计算要存下来，当前的计算最后还要合到历史数据里
     //  持久化下来 历史的数据状态
     //persist    blockmanager  速度快  可靠性差
-    // checkpoin    外界系统   成本高  可靠性好
-    //persist  调用后  再做 checkpoin  =>数据会在2个地方都存储
+    // checkpoint    外界系统   成本高  可靠性好
+    //persist  调用后  再做 checkpoint  =>数据会在2个地方都存储
 
     val data: ReceiverInputDStream[String] = ssc.socketTextStream("localhost",8889)
     val mapdata: DStream[(String, Int)] = data.map(_.split(" ")).map(x=>(x(0),1))
