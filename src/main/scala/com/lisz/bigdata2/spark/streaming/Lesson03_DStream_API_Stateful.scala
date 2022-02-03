@@ -5,13 +5,13 @@ import org.apache.spark.streaming.dstream.{DStream, ReceiverInputDStream}
 import org.apache.spark.streaming.{Duration, StreamingContext}
 import org.apache.spark.{SparkConf, SparkContext}
 
-object Lesson03_DStream_API_Stategul {
+object Lesson03_DStream_API_Stateful {
   def main(args: Array[String]): Unit = {
     // low level api。DStream也是属于low级别的
     val conf = new SparkConf().setAppName("asdkfh").setMaster("local[8]")
     val sc = new SparkContext(conf)
     sc.setLogLevel("ERROR")
-    sc.setCheckpointDir("hdfs://mycluster/sparktest/checkpoint")
+    sc.setCheckpointDir("hdfs://mycluster/sparktest/checkpoint") // 有状态计算里面必须又这个checkpoint存储状态数据作为聚合结果
     val ssc = new StreamingContext(sc, Duration(1000)) // 最小粒度。1000 ms Spark2.x 推荐不要小于100ms，3.x之后1ms已经ok了. 默认 window 1s，slide 1s
     // ssc.checkpoint("hdfs://mycluster/...") // 写入HDFS,还要带配置文件
 
@@ -26,12 +26,13 @@ object Lesson03_DStream_API_Stategul {
     val mappedData: DStream[(String, Int)] = data.map(_.split(" ")).map(x => (x(0), 1))
 //    mappedData.reduceByKey(_+_)
     // updateStateByKey中的key只是让历史数据跟当前数据关联起来就可以，不一定是当前数据里的这个key
-//    val res:DStream[(String, Int)] = mappedData.updateStateByKey((nv: Seq[Int], ov: Option[Int]) => { // 要指明类型和泛型
-//      // nv是个集合Seq，ov是历史累计的聚合数据，每个批次的job里面，对着nv求和，最后更新到ov里去，然后输出，有点像combinedByKey
-//      val count: Int = nv.count(_ > 0) //集合里的每个值只要大于0就计数，而这个计数是当前批次的，需要把它聚合到ov
-//      val oldVal: Int = ov.getOrElse(0)
-//      Some(count + oldVal)
-//    })
+    val res:DStream[(String, Int)] = mappedData.updateStateByKey((nv: Seq[Int], ov: Option[Int]) => { // 要指明类型和泛型, 每个批次调起两次，因为有两个key。不推荐这么写Seq可能引起内存溢出，改进版见 Lesson03_DStream_API_MapWithState
+      println("=== update ===")
+      // nv是个集合Seq，ov是历史累计的聚合数据，每个批次的job里面，对着nv求和，最后更新到ov里去，然后输出，有点像combinedByKey
+      val count: Int = nv.count(_ > 0) //集合里的每个值只要大于0就计数，而这个计数是当前批次的，需要把它聚合到ov
+      val oldVal: Int = ov.getOrElse(0)
+      Some(count + oldVal)
+    })
 
     // reduceByKey是对combinedByKey的封装：放入函数、聚合函数、combine函数
     // 第二次输出window=5s，slides=1s
@@ -67,14 +68,17 @@ object Lesson03_DStream_API_Stategul {
         first fun.  ov: 4, nv: 1
 
         second函数被调起了两次，因为一秒钟之内移出去的那一个batch内有两个key，一个从10降了2，另一个从5降了1
+
+      等到移出window的时候，也要先调用first，把该聚合的batches聚合一下（batches之间聚合，而不是其内部相同的key聚合，因为内部的聚合在进入window的时候已经计算过了）
+      然后才会计算second函数，把batches之间聚合的结果一并减掉（不是a-b-c而是a-(b+c)）
      */
-    val res = mappedData.reduceByKeyAndWindow((ov:Int, nv:Int) => { // 聚合函数，两条以上才能调用到，计算新进入的数据"加上", 基于单笔记录的。hello不会掉用，只有hi有两条记录，会调用到这个聚合函数
-      println(s"first fun.  ov: $ov, nv: $nv")
-      ov + nv
-    }, (ov:Int, oov:Int)=>{ // 计算挤出去的batch "减法"
-      println(s"second fun.  ov: $ov, oov: $oov")
-      ov - oov
-    }, Duration(6000), Duration(2000))
+//    val res = mappedData.reduceByKeyAndWindow((ov:Int, nv:Int) => { // 聚合函数，两条以上才能调用到，计算新进入的数据"加上", 基于单笔记录的。hello不会掉用，只有hi有两条记录，会调用到这个聚合函数
+//      println(s"first fun.  ov: $ov, nv: $nv")
+//      ov + nv
+//    }, (ov:Int, oov:Int)=>{ // 计算挤出去的batch "减法"
+//      println(s"second fun.  ov: $ov, oov: $oov")
+//      ov - oov
+//    }, Duration(6000), Duration(2000))
 
     res.print
 
