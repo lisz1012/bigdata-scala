@@ -17,7 +17,7 @@ object Lesson03_DStream_API_MapWithState {
     val mappedData: DStream[(String, Int)] = data.map(_.split(" ")).map(x => (x(0), 1))
 
     val res = mappedData.mapWithState(StateSpec.function(
-      (k: String, nv: Option[Int], ov: State[Int]) => { // Seq容易内存溢出，原理同Map。于是一条条的往State里面去更新，面向同一个key（k）每一条新值更新到老值上.稍微有一点点流式的感觉了，但还是算作批
+      (k: String, nv: Option[Int], ov: State[Int]) => { // Seq容易内存溢出，原理同Map, 一般会尽量避免这种积压数据的情况。于是一条条的往State里面去更新，面向同一个key（k）每一条新值更新到老值上.稍微有一点点流式的感觉了，但还是算作批
         println(s"*****k: $k nv: ${nv.getOrElse(0)} ov: ${ov.getOption().getOrElse(0)} **************")
         (k, nv.getOrElse(0) + ov.getOption().getOrElse(0)) // 返回一个键值对。比mappedData.updateStateByKey((nv: Seq[Int], ov: Option[Int])好的一点是可以对key（k）做判断，然后再决定如何执行
       }
