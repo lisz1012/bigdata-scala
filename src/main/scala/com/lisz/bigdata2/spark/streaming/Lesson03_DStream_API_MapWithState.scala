@@ -11,7 +11,7 @@ object Lesson03_DStream_API_MapWithState {
     val sc = new SparkContext(conf)
     sc.setLogLevel("ERROR")
     sc.setCheckpointDir("hdfs://mycluster/sparktest/checkpoint") // 有状态计算里面必须又这个checkpoint存储状态数据作为聚合结果.
-    val ssc = new StreamingContext(sc, Duration(1000)) // 最小粒度。1000 ms Spark2.x 推荐不要小于100ms，3.x之后1ms已经ok了，继续向流的方向贴近. 默认 window 1s，slide 1s
+    val ssc = new StreamingContext(sc, Duration(1000)) // 最小粒度。1000 ms Spark2.x 推荐不要小于100ms，3.x之后1ms已经ok了，继续向流的方向贴近. d但默认 window 1s，slide 1s
 
     val data: ReceiverInputDStream[String] = ssc.socketTextStream("localhost", 8889)
     val mappedData: DStream[(String, Int)] = data.map(_.split(" ")).map(x => (x(0), 1))
