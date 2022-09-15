@@ -27,7 +27,7 @@ object Lesson03_rdd_aggregator {
     res.foreach(println)
 
     // mapValues flatMapValues 输入参数是一个value，然后对这个value进行操作，二者不同点是输出一条还是多条数据
-    groupedData.mapValues(x => x.toList.sorted.take(2)).foreach(println) // x是一个类似集合的东西：CompactBuffer 一进一出
+    groupedData.mapValues(x => x.toList.sorted.take(2)).foreach(println) // x是一个类似集合的东西：CompactBuffer 一进一出。
     groupedData.flatMapValues(x => x.toList.sorted.take(2)).foreach(println) // x是一个类似集合的东西：CompactBuffer 一进多出
 
     // ReduceByKey给出sum值
