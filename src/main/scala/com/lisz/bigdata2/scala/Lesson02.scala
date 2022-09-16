@@ -68,7 +68,7 @@ object Lesson02 {
       println(s"$date\t$tp\t$msg")
     }
     fun07(new Date(), "info", "ok")
-    val info = fun07(_:Date, "info", _:String) // 不用每次调用都传入 "info"了
+    val info = fun07(_:Date, "info", _:String) // 不用每次调用都传入 "info"了，把精力都集中在应用相关的参数上 -- 偏应用函数
     info(new Date(), "ok")
     val error = fun07(_:Date, "error", _:String)
     error(new Date(), "not ok")
