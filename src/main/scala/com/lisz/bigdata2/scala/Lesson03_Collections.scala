@@ -90,7 +90,7 @@ object Lesson03_Collections {
     mapList.foreach(println)
 
     println("--------艺术-再-升华-------")
-    val iterator = listStr.iterator // 迭代器不存数据，只是存一个指针
+    val iterator = listStr.iterator // 迭代器不存数据，只是存一个指针，以及传进来的一个处理每一条数据的一个（回调）函数
     // flatMap只是返回了一个新的迭代器，没有发生计算。一个iterator会返回另一个Iterator, 在新迭代器的hasNext和next中被传入的
     // 函数得以被调用。多个Iterator会像这样被连成一个链条。中间只有一个小的cur存储空间被占用到了（见flatMap函数）
     // Java 8中新增的集合的map等方法，来自scala，也可以说来自spark的各个同名算子
