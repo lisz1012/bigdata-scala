@@ -12,7 +12,7 @@ object WordCountScala {
     val sc = new SparkContext(conf)
     sc.setLogLevel("error")
     val fileRDD: RDD[String] = sc.textFile("data/testdata.txt")
-    val words: RDD[String] = fileRDD.flatMap(x=>x.split("\\s+"))
+    val words: RDD[String] = fileRDD.flatMap(x=>x.split("\\s+"))  // RDD.flatMap底层还是调用了iterator的flatMap方法
     val pairWord = words.map(x=>(x, 1))
     val res = pairWord.reduceByKey(((x, y) => (x + y))) // x是old value， y是value
     res.foreach(println)
