@@ -34,9 +34,9 @@ object Lesson01_rdd_api01 {
     println("交并差集")
     val rdd1 = sc.parallelize(List(1, 2, 3, 4, 5))
     val rdd2 = sc.parallelize(List(3, 4, 5, 6, 7))
-    println(rdd1.partitions.size)
-    println(rdd2.partitions.size)
-    val unitedRDD = rdd1.union(rdd2)
+    println(rdd1.partitions.size)  // 打印1
+    println(rdd2.partitions.size)  // 打印1
+    val unitedRDD = rdd1.union(rdd2)  // 打印2
     println(unitedRDD.partitions.size)
     unitedRDD.foreach(println)
     // union属于Range依赖，属于窄依赖，作用在一台物理机上面，不会产生shuffle
