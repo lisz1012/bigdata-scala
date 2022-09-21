@@ -14,7 +14,7 @@ object WordCountScala {
     val fileRDD: RDD[String] = sc.textFile("data/testdata.txt")
     val words: RDD[String] = fileRDD.flatMap(x=>x.split("\\s+"))  // RDD.flatMap底层还是调用了iterator的flatMap方法
     val pairWord = words.map(x=>(x, 1))
-    val res = pairWord.reduceByKey(_+_) // x是old value， y是value
+    val res = pairWord.reduceByKey(_+_) // x是old value， y是value，这里是个简写形式reduceByKey底层还是调用了combineByKey
     res.foreach(println)
     println("---------")
 
