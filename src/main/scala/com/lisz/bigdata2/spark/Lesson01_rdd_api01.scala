@@ -36,8 +36,8 @@ object Lesson01_rdd_api01 {
     val rdd2 = sc.parallelize(List(3, 4, 5, 6, 7))
     println(rdd1.partitions.size)  // 打印1
     println(rdd2.partitions.size)  // 打印1
-    val unitedRDD = rdd1.union(rdd2)  // 打印2
-    println(unitedRDD.partitions.size)
+    val unitedRDD = rdd1.union(rdd2)
+    println(unitedRDD.partitions.size)  // 打印2
     unitedRDD.foreach(println)
     // union属于Range依赖，属于窄依赖，作用在一台物理机上面，不会产生shuffle
 //    println("----------------")
@@ -48,18 +48,18 @@ object Lesson01_rdd_api01 {
     // 如果数据不需要区分每一条记录归属于哪一个分区，简洁的，这样的数据不需要partitioner，不需要shuffle
     // shuffle的语义是洗牌，面向每一条记录计算他的分区好，如果有行为，不需要区分记录，本地IO拉取数据，那么这种直接IO一定
     // 比先Partition计算，shuffle落文件，最后再IO拉取速度块！！！spark很人性化，面向数据集提供了不同方法的封装，且方法已经经过经验、
-    // 尝试推断出自己的实现方式，人不需要干预（出了一个算子）。一个分区内的数据如果指不定去到下游的哪个分区，那就是shuffle依赖，
+    // 尝试推断出自己的实现方式，人不需要干预（除了一个算子）。一个分区内的数据如果指不定去到下游的哪个分区，那就是shuffle依赖，
     // 中间要有一个分区器。
     val cartesian = rdd1.cartesian(rdd2)
     cartesian.foreach(println)
     println("-----------------")
 
-    // 交集
+    // 交集，有shuffle，cogroup
     println("交集")
     val inters = rdd1.intersection(rdd2)
     inters.foreach(println)
 
-    // 差集.只提供了一个方法，有方向
+    // 差集.只提供了一个方法，有方向。有shuffle，cogroup
     println("差集")
     val subtract1 = rdd1.subtract(rdd2)
     subtract1.foreach(println)
@@ -83,12 +83,12 @@ object Lesson01_rdd_api01 {
     // cogroup相同的key的value相遇组成一个list
     val cogroup = kv1.cogroup(kv2)
     cogroup.foreach(println)
-//    val join = kv1.join(kv2)
-//    join.foreach(println)
-//    val leftJoin = kv1.leftOuterJoin(kv2)
-//    leftJoin.foreach(println)
-//    val fullOuterJoin = kv1.fullOuterJoin(kv2)
-//    fullOuterJoin.foreach(println)
+    val join = kv1.join(kv2)
+    join.foreach(println)
+    val leftJoin = kv1.leftOuterJoin(kv2)
+    leftJoin.foreach(println)
+    val fullOuterJoin = kv1.fullOuterJoin(kv2)
+    fullOuterJoin.foreach(println)
 
 
     while (true) {
