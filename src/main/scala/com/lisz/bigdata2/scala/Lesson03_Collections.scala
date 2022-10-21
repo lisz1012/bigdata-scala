@@ -14,12 +14,12 @@ object Lesson03_Collections {
     // val不可变描述的是引用的地址的值
     val arr = Array[Int](1,2,3,4,5)
     println(arr{1}) // 大小括号都可以
-    println(arr(1)) // 大小括号都可以
+    println(arr(1)) // 大小括号都可以.
     arr(1) = 99
     println(arr(1))
     arr.foreach(println)
 
-    // 2。列表/链表，默认的事不可变的。里面的对象都不能增删改
+    // 2。列表/链表，默认的事不可变的。里面的对象都不能增删改.
     val list01 = List(1,2,3,4,5,4,3,2,1)
     list01.foreach(println)
     println("-------------------------")
@@ -43,7 +43,7 @@ object Lesson03_Collections {
     set03.foreach(println)
 
     // Tuple
-    val t2 = new Tuple2(11, "asdads") // 很像键值对
+    val t2 = new Tuple2(11, "asdads") // 很像键值对. 但是Tuple可以一直到Tuple22，有22项
     val t3 = Tuple3(1, "sdfds", "sdas")
     val t4 = (1, 2, 3, 4)
     val t22 = ((a:Int, b:Int) => a + b + 8, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22)
