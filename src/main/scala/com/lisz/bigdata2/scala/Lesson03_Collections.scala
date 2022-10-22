@@ -43,7 +43,7 @@ object Lesson03_Collections {
     set03.foreach(println)
 
     // Tuple
-    val t2 = new Tuple2(11, "asdads") // 很像键值对. 但是Tuple可以一直到Tuple22，有22项
+    val t2 = new Tuple2(11, "asdads") // 很像键值对. 但是Tuple可以一直到Tuple22，有22项, 只有22个是因为语言的设计者到这里就懒的加了
     val t3 = Tuple3(1, "sdfds", "sdas")
     val t4 = (1, 2, 3, 4)
     val t22 = ((a:Int, b:Int) => a + b + 8, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22)
