@@ -11,7 +11,7 @@ object Lesson03_Collections {
 
     // Scala 还有自己的数据结构
     // 1。 数组
-    // val不可变描述的是引用的地址的值
+    // val不可变描述的是引用的地址的值。
     val arr = Array[Int](1,2,3,4,5)
     println(arr{1}) // 大小括号都可以
     println(arr(1)) // 大小括号都可以.
