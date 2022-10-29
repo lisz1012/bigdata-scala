@@ -17,5 +17,19 @@ object Lesson06_Match {
     while (res.hasNext) {
       println(res.next)
     }
+
+    println(s"args.length = ${args.length}")
+    val env = "PROD"
+    var db = ""
+    env match {
+      case "PROD" => db = "prod"
+      case "PROD_TW" => db = "prod_tw"
+      case _ => throw new IllegalArgumentException(s"""ENV $env is not allowed value""")
+    }
+    println(s"""DB = $db""")
+
+    for (day <- 1 to 5) {
+      println(s"Day of week: $day")
+    }
   }
 }

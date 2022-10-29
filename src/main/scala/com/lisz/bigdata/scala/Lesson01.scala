@@ -38,7 +38,7 @@ object Lesson01 {
     for (i <- 1 until (10) if(i % 2 == 0)) {
       println(s"i = $i")
     }
-    println("-------------------")
+    println("-------- 1 to 9 (include 1 and 9)-----------")
     for (i <- 1 to 9) {
       for (j <- 1 to i) {
         print(s"$i * $j = ${i * j}  ")
