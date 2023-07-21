@@ -7,7 +7,7 @@ object WordCountScala {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf()
     conf.setAppName("wc")
-    conf.setMaster("local") //本地运行
+    //conf.setMaster("local") //本地运行
 
     val sc = new SparkContext(conf)
     sc.setLogLevel("error")

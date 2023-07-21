@@ -167,7 +167,7 @@ object Lesson06_rdd_over {
     println("---------------------让统计结果放大10倍-----------------------------")
     val res01 = dataRDD.flatMap(_.split("\\s+")).map((_, 1)).reduceByKey(_ + _)
     //val res02 = res01.map(x => (x._1, x._2 * 10)).groupByKey()
-    val res02 = res01.mapValues(_ * 10).groupByKey() // 比上面的写法少一次shuffle！key没有发生变化、分区器没有发生变化、分区数没有发生变化。建议用mapValues和flatMapValues，因为他们会传preservesPartitioning = true不丢弃分区器
+    val res02 = res01.mapValues(_ * 10).groupByKey() //比上面的写法少一次shuffle！key没有发生变化、分区器没有发生变化、分区数没有发生变化。建议用mapValues和flatMapValues，因为他们会传preservesPartitioning = true不丢弃分区器
     res02.foreach(println)
     Thread.sleep(Long.MaxValue)
   }
